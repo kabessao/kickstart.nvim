@@ -102,7 +102,14 @@ require('lazy').setup({
   {
     'kyazdani42/nvim-tree.lua',
     config = function()
-      require('nvim-tree').setup()
+      local nvimTree = require('nvim-tree')
+      nvimTree.setup {
+        update_focused_file = {
+          enable = true,
+          update_root = false,
+          ignore_list = {},
+        },
+      }
     end,
   },
   {
