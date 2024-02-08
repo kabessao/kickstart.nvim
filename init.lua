@@ -59,7 +59,6 @@ if not vim.loop.fs_stat(lazypath) then
   }
 end
 vim.opt.rtp:prepend(lazypath)
-
 -- [[ Configure plugins ]]
 -- NOTE: Here is where you install your plugins.
 --  You can configure plugins using the `config` key.
@@ -77,6 +76,30 @@ require('lazy').setup({
   'tpope/vim-sleuth',
 
   -- my extra plugins
+  'rcarriga/nvim-notify',
+
+  {
+    'nvim-java/nvim-java',
+    dependencies = {
+      'nvim-java/lua-async-await',
+      'nvim-java/nvim-java-core',
+      'nvim-java/nvim-java-test',
+      'nvim-java/nvim-java-dap',
+      'MunifTanjim/nui.nvim',
+      'neovim/nvim-lspconfig',
+      'mfussenegger/nvim-dap',
+      {
+        'williamboman/mason.nvim',
+        opts = {
+          registries = {
+            'github:nvim-java/mason-registry',
+            'github:mason-org/mason-registry',
+          },
+        },
+      }
+    },
+  },
+
   {
     'romgrk/barbar.nvim',
     dependencies = {
@@ -141,7 +164,7 @@ require('lazy').setup({
 
       -- Useful status updates for LSP
       -- NOTE: `opts = {}` is the same as calling `require('fidget').setup({})`
-      { 'j-hui/fidget.nvim', opts = {} },
+      { 'j-hui/fidget.nvim',       opts = {} },
 
       -- Additional lua configuration, makes nvim stuff amazing!
       'folke/neodev.nvim',
@@ -177,7 +200,7 @@ require('lazy').setup({
   },
 
   -- Useful plugin to show you pending keybinds.
-  { 'folke/which-key.nvim', opts = {} },
+  { 'folke/which-key.nvim',  opts = {} },
   {
     -- Adds git related signs to the gutter, as well as utilities for managing changes
     'lewis6991/gitsigns.nvim',
@@ -254,16 +277,12 @@ require('lazy').setup({
   },
 
   {
-    -- Theme inspired by Atom
-    'navarasu/onedark.nvim',
+    -- My Theme
+    'rafamadriz/neon',
     priority = 1000,
     lazy = false,
     config = function()
-      require('onedark').setup {
-        -- Set a style preset. 'dark' is default.
-        style = 'dark', -- dark, darker, cool, deep, warm, warmer, light
-      }
-      require('onedark').load()
+      vim.cmd.colorscheme 'neon'
     end,
   },
 
@@ -338,6 +357,15 @@ require('lazy').setup({
   -- { import = 'custom.plugins' },
 }, {})
 
+vim.opt.cursorline = true
+
+vim.opt.colorcolumn = "120"
+
+vim.notify = require("notify")
+vim.print = require("notify")
+
+require('java').setup()
+
 -- [[ Setting options ]]
 -- See `:help vim.o`
 -- NOTE: You can change these options as you wish!
@@ -387,9 +415,9 @@ vim.keymap.set({ 'n', 'v' }, '<Space>', '<Nop>', { silent = true })
 
 vim.keymap.set({ 'n', 'v', 'x', 'i' }, '<c-s>', ':w<CR>', { silent = true })
 
-vim.keymap.set('n', '<leader>gg', '<CMD>LazyGit<CR>', { silent = true, desc = 'Open Lazigit' })
+vim.keymap.set('n', '<leader>gg', '<CMD>LazyGit<CR>', { silent = true, desc = 'Open Lazygit' })
 
-vim.keymap.set('n', '<leader><tab>', '<CMD>NvimTreeToggle<CR>', { silent = true, desc = 'Open Lazigit' })
+vim.keymap.set('n', '<leader><tab>', '<CMD>NvimTreeToggle<CR>', { silent = true, desc = 'Open Tree View' })
 
 -- vim.keymap.set('n', '<', '<<_', { noremap = true, silent = true })
 -- vim.keymap.set('n', '>', '>>_', { noremap = true, silent = true })
@@ -407,6 +435,11 @@ vim.keymap.set('v', '>', '>>gv', { noremap = true, silent = true })
 
 vim.keymap.set('n', '<M-j>', ':m .+1<CR>==', { silent = true })
 vim.keymap.set('x', '<M-j>', ":m '>+1<CR>gv-gv", { silent = true })
+
+vim.keymap.set('n', '<C-j>', "j", { silent = true })
+vim.keymap.set('n', '<C-k>', "k", { silent = true })
+vim.keymap.set('n', '<C-h>', "h", { silent = true })
+vim.keymap.set('n', '<C-l>', "l", { silent = true })
 
 vim.keymap.set('n', '<M-k>', ':m .-2<CR>==', { silent = true })
 vim.keymap.set('x', '<M-k>', ":m '<-2<CR>gv-gv", { silent = true })
@@ -457,6 +490,9 @@ require('telescope').setup {
         ['<C-d>'] = false,
       },
     },
+    path_display = {
+      "truncate",
+    }
   },
 }
 

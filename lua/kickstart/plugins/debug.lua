@@ -20,7 +20,6 @@ return {
 
     -- Add your own debuggers here
     'leoluz/nvim-dap-go',
-    'mfussenegger/nvim-jdtls',
   },
   config = function()
     local dap = require 'dap'
@@ -84,6 +83,5 @@ return {
 
     -- Install golang specific config
     require('dap-go').setup()
-    require('jdtls').setup_dap({ hotcodereplace = 'auto' })
   end,
 }
