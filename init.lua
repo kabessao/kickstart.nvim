@@ -78,6 +78,7 @@ require('lazy').setup({
   -- my plugins
   'rcarriga/nvim-notify',
   'RRethy/vim-illuminate',
+  'mbbill/undotree',
 
   {
     'nvim-java/nvim-java',
@@ -419,7 +420,10 @@ vim.keymap.set({ 'n', 'v' }, '<Space>', '<Nop>', { silent = true })
 
 vim.keymap.set({ 'n', 'v', 'x', 'i' }, '<c-s>', ':w<CR>', { silent = true })
 
+-- LazyGit commands
 vim.keymap.set('n', '<leader>gg', '<CMD>LazyGit<CR>', { silent = true, desc = 'Open Lazygit' })
+vim.keymap.set('n', '<leader>gc', '<CMD>LazyGitCurrentFile<CR>',
+  { silent = true, desc = 'Open Lazygit with curent file' })
 
 vim.keymap.set('n', '<leader><tab>', '<CMD>NvimTreeToggle<CR>', { silent = true, desc = 'Open Tree View' })
 
@@ -436,6 +440,8 @@ vim.keymap.set('v', '>', '>>gv', { noremap = true, silent = true })
 -- pcall(vim.keymap.del,{'n' , 'v'} , '<iÞ' , nil)
 -- pcall(vim.keymap.del,{'n' , 'v'} , '<aÞ' , nil)
 -- pcall(vim.keymap.del,{'n' , 'v'} , '<Þ'  , nil)
+
+vim.keymap.set('n', '<leader>z', ':UndotreeToggle<CR>', { silent = true })
 
 vim.keymap.set('n', '<M-j>', ':m .+1<CR>==', { silent = true })
 vim.keymap.set('x', '<M-j>', ":m '>+1<CR>gv-gv", { silent = true })
@@ -492,6 +498,9 @@ require('telescope').setup {
       i = {
         ['<C-u>'] = false,
         ['<C-d>'] = false,
+      },
+      n = {
+        ['X'] = require('telescope.actions').delete_buffer
       },
     },
     path_display = {
