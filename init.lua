@@ -358,9 +358,6 @@ require('lazy').setup({
   -- { import = 'custom.plugins' },
 }, {})
 
--- -- autocommand for highlighting instances
--- vim.api.nvim_create_autocmd({ "CursorHold", "CursorHoldI" }, { command = "lua vim.lsp.buf.document_highlight()" })
--- vim.api.nvim_create_autocmd({ "CursorMoved" }, { command = "lua vim.lsp.buf.clear_references()" })
 
 vim.opt.tabstop = 4
 
