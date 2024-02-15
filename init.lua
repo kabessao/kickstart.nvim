@@ -75,8 +75,9 @@ require('lazy').setup({
   -- Detect tabstop and shiftwidth automatically
   'tpope/vim-sleuth',
 
-  -- my extra plugins
+  -- my plugins
   'rcarriga/nvim-notify',
+  'RRethy/vim-illuminate',
 
   {
     'nvim-java/nvim-java',
@@ -356,6 +357,12 @@ require('lazy').setup({
   --    For additional information see: https://github.com/folke/lazy.nvim#-structuring-your-plugins
   -- { import = 'custom.plugins' },
 }, {})
+
+-- -- autocommand for highlighting instances
+-- vim.api.nvim_create_autocmd({ "CursorHold", "CursorHoldI" }, { command = "lua vim.lsp.buf.document_highlight()" })
+-- vim.api.nvim_create_autocmd({ "CursorMoved" }, { command = "lua vim.lsp.buf.clear_references()" })
+
+vim.opt.tabstop = 4
 
 vim.opt.cursorline = true
 
