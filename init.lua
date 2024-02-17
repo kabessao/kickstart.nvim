@@ -81,6 +81,21 @@ require('lazy').setup({
   'mbbill/undotree',
 
   {
+    'sindrets/diffview.nvim',
+    config = function()
+      require('diffview').setup({
+        view = {
+          merge_tool = {
+            layout = "diff3_mixed",
+            disable_diagnostics = true,
+            winbar_info = true,
+          }
+        }
+      })
+    end
+  },
+
+  {
     'nvim-java/nvim-java',
     dependencies = {
       'nvim-java/lua-async-await',
@@ -441,6 +456,11 @@ vim.keymap.set('v', '>', '>>gv', { noremap = true, silent = true })
 -- pcall(vim.keymap.del,{'n' , 'v'} , '<aÞ' , nil)
 -- pcall(vim.keymap.del,{'n' , 'v'} , '<Þ'  , nil)
 
+vim.keymap.set('n', '<c-k>', '<c-w>k', { silent = true })
+vim.keymap.set('n', '<c-j>', '<c-w>j', { silent = true })
+vim.keymap.set('n', '<c-l>', '<c-w>l', { silent = true })
+vim.keymap.set('n', '<c-h>', '<c-w>h', { silent = true })
+
 vim.keymap.set('n', '<leader>z', ':UndotreeToggle<CR>', { silent = true })
 
 vim.keymap.set('n', '<M-j>', ':m .+1<CR>==', { silent = true })
@@ -500,7 +520,7 @@ require('telescope').setup {
         ['<C-d>'] = false,
       },
       n = {
-        ['X'] = require('telescope.actions').delete_buffer
+        ['X'] = require('telescope.actions').delete_buffer,
       },
     },
     path_display = {
@@ -681,7 +701,7 @@ local on_attach = function(_, bufnr)
 
   -- See `:help K` for why this keymap
   nmap('K', vim.lsp.buf.hover, 'Hover Documentation')
-  nmap('<C-k>', vim.lsp.buf.signature_help, 'Signature Documentation')
+  -- nmap('<C-k>', vim.lsp.buf.signature_help, 'Signature Documentation')
 
   -- Lesser used LSP functionality
   nmap('gD', vim.lsp.buf.declaration, '[G]oto [D]eclaration')
