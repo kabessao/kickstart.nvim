@@ -374,6 +374,13 @@ require('lazy').setup({
   -- { import = 'custom.plugins' },
 }, {})
 
+-- quit diagnostics list
+vim.cmd [[
+augroup diagnostics
+  autocmd!
+  autocmd FileType qf nmap <buffer> q <cmd>q<cr>
+augroup end
+]]
 
 vim.opt.tabstop = 4
 
@@ -478,8 +485,6 @@ vim.keymap.set('n', '<m-l>', '<cmd>BufferNext<CR>', { silent = true })
 vim.keymap.set('n', '<m-h>', '<cmd>BufferPrevious<CR>', { silent = true })
 vim.keymap.set('n', '<m-c-l>', '<cmd>BufferMoveNext<CR>', { silent = true })
 vim.keymap.set('n', '<m-c-h>', '<cmd>BufferMovePrevious<CR>', { silent = true })
-vim.keymap.set('n', '<tab>', '<cmd>BufferNext<CR>', { silent = true })
-vim.keymap.set('n', '<s-tab>', '<cmd>BufferPrevious<CR>', { silent = true })
 vim.keymap.set('n', '<leader>c', '<cmd>BufferClose<CR>', { silent = true })
 
 vim.keymap.set({ 'n', 'v' }, '<leader>a:', ":Tab /:<cr>", { silent = true })
