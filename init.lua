@@ -79,6 +79,20 @@ require('lazy').setup({
   'rcarriga/nvim-notify',
   'RRethy/vim-illuminate',
   'mbbill/undotree',
+  {
+    'laytan/cloak.nvim',
+    config = function()
+      require('cloak').setup({
+        enabled = true,
+        patterns = {
+          {
+            file_pattern = '*.yaml',
+            cloak_pattern = { ':.+', '-.+' }
+          },
+        }
+      })
+    end
+  },
 
   {
     'sindrets/diffview.nvim',
@@ -382,6 +396,8 @@ augroup diagnostics
 augroup end
 ]]
 
+vim.opt.foldmethod = "marker"
+
 vim.opt.tabstop = 4
 
 vim.opt.cursorline = true
@@ -469,6 +485,8 @@ vim.keymap.set('n', '<c-l>', '<c-w>l', { silent = true })
 vim.keymap.set('n', '<c-h>', '<c-w>h', { silent = true })
 
 vim.keymap.set('n', '<leader>z', ':UndotreeToggle<CR>', { silent = true })
+
+vim.keymap.set('n', '<leader>tc', ':CloakToggle<CR>', { silent = true, desc = '[t]oggle [c]loak' })
 
 vim.keymap.set('n', '<M-j>', ':m .+1<CR>==', { silent = true })
 vim.keymap.set('x', '<M-j>', ":m '>+1<CR>gv-gv", { silent = true })
