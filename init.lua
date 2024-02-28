@@ -95,6 +95,44 @@ require('lazy').setup({
   },
 
   {
+    'kelly-lin/ranger.nvim',
+    config = function()
+      local ranger = require("ranger-nvim")
+      local ui = {
+        border = "rounded",
+        height = 0.9,
+        width = 0.9,
+      }
+
+      ranger.setup({
+        replace_netrw = true,
+        ui = ui
+      })
+
+      local open = function()
+        ranger.open(true)
+      end
+
+      vim.keymap.set('n', '<leader>or', open, { silent = true, desc = '[o]pen [r]anger' })
+    end
+  },
+
+  {
+    'laytan/cloak.nvim',
+    config = function()
+      require('cloak').setup({
+        enabled = true,
+        patterns = {
+          {
+            file_pattern = '*.yaml',
+            cloak_pattern = { ':.+', '-.+' }
+          },
+        }
+      })
+    end
+  },
+
+  {
     'sindrets/diffview.nvim',
     config = function()
       require('diffview').setup({
@@ -153,19 +191,21 @@ require('lazy').setup({
   'godlygeek/tabular',
   'kdheepak/lazygit.nvim',
   'tpope/vim-obsession',
-  {
-    'kyazdani42/nvim-tree.lua',
-    config = function()
-      local nvimTree = require('nvim-tree')
-      nvimTree.setup {
-        update_focused_file = {
-          enable = true,
-          update_root = false,
-          ignore_list = {},
-        },
-      }
-    end,
-  },
+
+  -- {
+  --   'kyazdani42/nvim-tree.lua',
+  --   config = function()
+  --     local nvimTree = require('nvim-tree')
+  --     nvimTree.setup {
+  --       update_focused_file = {
+  --         enable = true,
+  --         update_root = false,
+  --         ignore_list = {},
+  --       },
+  --     }
+  --   end,
+  -- },
+  --
   {
     'm4xshen/autoclose.nvim',
     config = function()
@@ -463,7 +503,7 @@ vim.keymap.set('n', '<leader>gg', '<CMD>LazyGit<CR>', { silent = true, desc = 'O
 vim.keymap.set('n', '<leader>gc', '<CMD>LazyGitCurrentFile<CR>',
   { silent = true, desc = 'Open Lazygit with curent file' })
 
-vim.keymap.set('n', '<leader><tab>', '<CMD>NvimTreeToggle<CR>', { silent = true, desc = 'Open Tree View' })
+-- vim.keymap.set('n', '<leader><tab>', '<CMD>NvimTreeToggle<CR>', { silent = true, desc = 'Open Tree View' })
 
 -- vim.keymap.set('n', '<', '<<_', { noremap = true, silent = true })
 -- vim.keymap.set('n', '>', '>>_', { noremap = true, silent = true })
