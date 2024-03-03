@@ -79,6 +79,21 @@ require('lazy').setup({
   'rcarriga/nvim-notify',
   'RRethy/vim-illuminate',
   'mbbill/undotree',
+  'ixru/nvim-markdown',
+
+  {
+    'nvimdev/lspsaga.nvim',
+    config = function()
+      require('lspsaga').setup {
+        lightbulb = {
+          enable = false,
+        },
+      }
+      vim.keymap.set('n', 'gp', '<CMD>Lspsaga peek_definition<CR>', { silent = true, desc = 'Peek Definition' })
+      vim.keymap.set('n', 'K', '<CMD>Lspsaga hover_doc<CR>', { silent = true })
+    end,
+  },
+
   {
     'laytan/cloak.nvim',
     config = function()
@@ -207,9 +222,9 @@ require('lazy').setup({
   -- },
   --
   {
-    'm4xshen/autoclose.nvim',
+    'windwp/nvim-autopairs',
     config = function()
-      require('autoclose').setup()
+      require "nvim-autopairs".setup {}
     end
   },
   {
@@ -665,7 +680,7 @@ vim.keymap.set('n', '<leader>sr', require('telescope.builtin').resume, { desc = 
 vim.defer_fn(function()
   require('nvim-treesitter.configs').setup {
     -- Add languages to be installed here that you want installed for treesitter
-    ensure_installed = { 'c', 'cpp', 'go', 'lua', 'python', 'rust', 'tsx', 'javascript', 'typescript', 'vimdoc', 'vim', 'bash' },
+    ensure_installed = { 'c', 'cpp', 'go', 'lua', 'python', 'rust', 'tsx', 'javascript', 'typescript', 'vimdoc', 'vim', 'bash', 'markdown', 'markdown_inline' },
 
     -- Autoinstall languages that are not installed. Defaults to false (but you can change for yourself!)
     auto_install = false,
@@ -763,7 +778,7 @@ local on_attach = function(_, bufnr)
   nmap('<leader>ws', require('telescope.builtin').lsp_dynamic_workspace_symbols, '[W]orkspace [S]ymbols')
 
   -- See `:help K` for why this keymap
-  nmap('K', vim.lsp.buf.hover, 'Hover Documentation')
+  -- nmap('K', vim.lsp.buf.hover, 'Hover Documentation')
   -- nmap('<C-k>', vim.lsp.buf.signature_help, 'Signature Documentation')
 
   -- Lesser used LSP functionality
