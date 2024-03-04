@@ -207,20 +207,6 @@ require('lazy').setup({
   'kdheepak/lazygit.nvim',
   'tpope/vim-obsession',
 
-  -- {
-  --   'kyazdani42/nvim-tree.lua',
-  --   config = function()
-  --     local nvimTree = require('nvim-tree')
-  --     nvimTree.setup {
-  --       update_focused_file = {
-  --         enable = true,
-  --         update_root = false,
-  --         ignore_list = {},
-  --       },
-  --     }
-  --   end,
-  -- },
-  --
   {
     'windwp/nvim-autopairs',
     config = function()
@@ -517,8 +503,6 @@ vim.keymap.set({ 'n', 'v', 'x', 'i' }, '<c-s>', ':w<CR>', { silent = true })
 vim.keymap.set('n', '<leader>gg', '<CMD>LazyGit<CR>', { silent = true, desc = 'Open Lazygit' })
 vim.keymap.set('n', '<leader>gc', '<CMD>LazyGitCurrentFile<CR>',
   { silent = true, desc = 'Open Lazygit with curent file' })
-
--- vim.keymap.set('n', '<leader><tab>', '<CMD>NvimTreeToggle<CR>', { silent = true, desc = 'Open Tree View' })
 
 -- vim.keymap.set('n', '<', '<<_', { noremap = true, silent = true })
 -- vim.keymap.set('n', '>', '>>_', { noremap = true, silent = true })
