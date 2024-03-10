@@ -25,7 +25,9 @@ return {
 
     vim.api.nvim_create_autocmd({ 'BufRead', 'BufNewFile' }, {
       pattern = "*.java",
-      callback = disableAutoFormat
+      callback = function()
+        format_is_enabled = false
+      end
     })
 
     -- Create an augroup that is used for managing our formatting autocmds.

@@ -73,13 +73,20 @@ require('lazy').setup({
   'tpope/vim-rhubarb',
 
   -- Detect tabstop and shiftwidth automatically
-  'tpope/vim-sleuth',
+  -- 'tpope/vim-sleuth',
 
   -- my plugins
   'rcarriga/nvim-notify',
   'RRethy/vim-illuminate',
   'mbbill/undotree',
   'ixru/nvim-markdown',
+
+  {
+    'NMAC427/guess-indent.nvim',
+    config = function()
+      require('guess-indent').setup {}
+    end
+  },
 
   {
     'nvimdev/lspsaga.nvim',
@@ -124,11 +131,17 @@ require('lazy').setup({
         ui = ui
       })
 
-      local open = function()
+      local openInCurrentFile = function()
         ranger.open(true)
       end
 
-      vim.keymap.set('n', '<leader>or', open, { silent = true, desc = '[o]pen [r]anger' })
+      local openAtWorkspaceRoot = function()
+        ranger.open(false)
+      end
+
+      vim.keymap.set('n', '<leader>or', openInCurrentFile, { silent = true, desc = '[o]pen [r]anger' })
+      vim.keymap.set('n', '<leader>ow', openAtWorkspaceRoot,
+        { silent = true, desc = '[o]pen ranger at [w]orkspace root' })
     end
   },
 
@@ -437,9 +450,13 @@ augroup diagnostics
 augroup end
 ]]
 
+vim.opt.scrolloff = 5
+
 vim.opt.foldmethod = "marker"
 
-vim.opt.tabstop = 4
+vim.opt.tabstop = 2
+
+vim.opt.shiftwidth = 2
 
 vim.opt.cursorline = true
 
@@ -583,6 +600,7 @@ require('telescope').setup {
       },
       n = {
         ['X'] = require('telescope.actions').delete_buffer,
+        ['q'] = require('telescope.actions').close
       },
     },
     path_display = {
@@ -664,7 +682,7 @@ vim.keymap.set('n', '<leader>sr', require('telescope.builtin').resume, { desc = 
 vim.defer_fn(function()
   require('nvim-treesitter.configs').setup {
     -- Add languages to be installed here that you want installed for treesitter
-    ensure_installed = { 'c', 'cpp', 'go', 'lua', 'python', 'rust', 'tsx', 'javascript', 'typescript', 'vimdoc', 'vim', 'bash', 'markdown', 'markdown_inline' },
+    ensure_installed = { 'c', 'cpp', 'go', 'lua', 'python', 'rust', 'tsx', 'javascript', 'typescript', 'vimdoc', 'vim', 'bash', 'markdown', 'markdown_inline', 'java' },
 
     -- Autoinstall languages that are not installed. Defaults to false (but you can change for yourself!)
     auto_install = false,
@@ -675,7 +693,7 @@ vim.defer_fn(function()
     -- You can specify additional Treesitter modules here: -- For example: -- playground = {--enable = true,-- },
     modules = {},
     highlight = { enable = true },
-    indent = { enable = true },
+    indent = { enable = false },
     incremental_selection = {
       enable = true,
       keymaps = {
@@ -905,7 +923,7 @@ cmp.setup {
   },
 }
 
-vim.api.nvim_command [[set tabstop=4]]
+-- vim.api.nvim_command [[set tabstop=4]]
 
 vim.g.firenvim_config = {
   globalSettings = {
