@@ -8,6 +8,19 @@ local bundles = {
 	vim.fn.glob(vim.env.HOME .. '/.local/share/nvim/mason/share/java-debug-adapter/com.microsoft.java.debug.plugin.jar'),
 }
 
+vim.api.nvim_create_autocmd(
+	"bufWritePre",
+	{
+		buffer = 0,
+		callback = function()
+			vim.lsp.buf.format();
+			require('jdtls').organize_imports();
+			vim.api.nvim_command("w");
+		end
+	}
+)
+
+
 -- Needed for running/debugging unit tests
 vim.list_extend(bundles,
 	vim.split(vim.fn.glob(vim.env.HOME .. "/.local/share/nvim/mason/share/java-test/*.jar", true), "\n"))
@@ -49,6 +62,9 @@ local config = {
 	-- See https://github.com/eclipse/eclipse.jdt.ls/wiki/Running-the-JAVA-LS-server-from-the-command-line#initialize-request
 	settings = {
 		java = {
+			autobuild = {
+				enabled = false
+			},
 			-- TODO Replace this with the absolute path to your main java version (JDK 17 or higher)
 			home = '/usr/lib/jvm/java-17-openjdk',
 			eclipse = {
@@ -59,10 +75,10 @@ local config = {
 				-- TODO Update this by adding any runtimes that you need to support your Java projects and removing any that you don't have installed
 				-- The runtime name parameters need to match specific Java execution environments.  See https://github.com/tamago324/nlsp-settings.nvim/blob/2a52e793d4f293c0e1d61ee5794e3ff62bfbbb5d/schemas/_generated/jdtls.json#L317-L334
 				runtimes = {
-					-- {
-					-- 	name = "JavaSE-11",
-					-- 	path = "/usr/lib/jvm/java-11-openjdk",
-					-- },
+					{
+						name = "JavaSE-11",
+						path = "/usr/lib/jvm/java-11-openjdk",
+					},
 					{
 						name = "JavaSE-17",
 						path = "/usr/lib/jvm/java-17-openjdk",
@@ -139,8 +155,8 @@ local config = {
 
 -- Needed for debugging
 config['on_attach'] = function(client, bufnr)
-	jdtls.setup_dap({ hotcodereplace = 'auto' })
-	require('jdtls.dap').setup_dap_main_class_configs()
+	-- jdtls.setup_dap({ hotcodereplace = 'auto' })
+	-- require('jdtls.dap').setup_dap_main_class_configs()
 	local on_attach = require('on_attach')
 	on_attach(client, bufnr)
 end
