@@ -82,6 +82,19 @@ require('lazy').setup({
   'mfussenegger/nvim-lint',
 
   {
+    'jmbuhr/otter.nvim',
+    dependencies = {
+      'nvim-treesitter/nvim-treesitter',
+    },
+    opts = {},
+  },
+
+  {
+    'norcalli/nvim-colorizer.lua',
+    opts = {}
+  },
+
+  {
     'WhoIsSethDaniel/mason-tool-installer.nvim',
     opts = {
       ensure_installed = {
@@ -448,6 +461,17 @@ augroup diagnostics
 augroup end
 ]]
 
+vim.cmd [[
+augroup zk_css
+  autocmd!
+  autocmd BufRead,BufNewFile *css.dsp set filetype=css
+augroup end
+]]
+
+require 'lspconfig'.nil_ls.setup {}
+
+vim.wo.relativenumber = true
+
 vim.opt.scrolloff = 5
 
 vim.opt.foldmethod = "marker"
@@ -540,13 +564,13 @@ vim.keymap.set('n', '<leader>z', ':UndotreeToggle<CR>', { silent = true })
 
 vim.keymap.set('n', '<leader>tc', ':CloakToggle<CR>', { silent = true, desc = '[t]oggle [c]loak' })
 
-vim.keymap.set('n', '<M-j>', ':m .+1<CR>==', { silent = true })
-vim.keymap.set('x', '<M-j>', ":m '>+1<CR>gv-gv", { silent = true })
-
 vim.keymap.set('n', '<C-j>', "j", { silent = true })
 vim.keymap.set('n', '<C-k>', "k", { silent = true })
 vim.keymap.set('n', '<C-h>', "h", { silent = true })
 vim.keymap.set('n', '<C-l>', "l", { silent = true })
+
+vim.keymap.set('n', '<M-j>', ':m .+1<CR>==', { silent = true })
+vim.keymap.set('x', '<M-j>', ":m '>+1<CR>gv-gv", { silent = true })
 
 vim.keymap.set('n', '<M-k>', ':m .-2<CR>==', { silent = true })
 vim.keymap.set('x', '<M-k>', ":m '<-2<CR>gv-gv", { silent = true })
@@ -556,6 +580,12 @@ vim.keymap.set('n', '<m-h>', '<cmd>BufferPrevious<CR>', { silent = true })
 vim.keymap.set('n', '<m-c-l>', '<cmd>BufferMoveNext<CR>', { silent = true })
 vim.keymap.set('n', '<m-c-h>', '<cmd>BufferMovePrevious<CR>', { silent = true })
 vim.keymap.set('n', '<leader>c', '<cmd>BufferClose<CR>', { silent = true })
+
+vim.keymap.set({ 'n', 'v' }, '<leader>rR', ':s;\\<"\\>;', { silent = true })
+vim.keymap.set({ 'n', 'v' }, '<leader>rr', ':s;";', { silent = true })
+vim.keymap.set({ 'n', 'v' }, '<leader>ra', ':s;$;', { silent = true })
+vim.keymap.set({ 'n', 'v' }, '<leader>ri', ':s;^;', { silent = true })
+vim.keymap.set({ 'n', 'v' }, '<leader>rf', ':s;";', { silent = true })
 
 vim.keymap.set({ 'n', 'v' }, '<leader>a:', ":Tab /:<cr>", { silent = true })
 vim.keymap.set({ 'n', 'v' }, '<leader>a,', ":Tab /,<cr>", { silent = true })
@@ -751,7 +781,7 @@ end, 0)
 local on_attach = require('on_attach')
 
 -- document existing key chains
-require('which-key').register {
+require('which-key').add {
   ['<leader>c'] = { name = '[C]ode', _ = 'which_key_ignore' },
   ['<leader>d'] = { name = '[D]ocument', _ = 'which_key_ignore' },
   ['<leader>g'] = { name = '[G]it', _ = 'which_key_ignore' },
@@ -763,7 +793,7 @@ require('which-key').register {
 }
 -- register which-key VISUAL mode
 -- required for visual <leader>hs (hunk stage) to work
-require('which-key').register({
+require('which-key').add({
   ['<leader>'] = { name = 'VISUAL <leader>' },
   ['<leader>h'] = { 'Git [H]unk' },
 }, { mode = 'v' })
