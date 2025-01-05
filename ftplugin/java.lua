@@ -77,11 +77,11 @@ local config = {
 				runtimes = {
 					{
 						name = "JavaSE-11",
-						path = "/usr/lib/jvm/java-11-openjdk",
+						path = vim.env.JAVA_HOME_11,
 					},
 					{
 						name = "JavaSE-17",
-						path = "/usr/lib/jvm/java-17-openjdk",
+						path = vim.env.JAVA_HOME_17,
 					},
 					-- {
 					-- 	name = "JavaSE-19",
