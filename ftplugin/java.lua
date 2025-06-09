@@ -3,11 +3,19 @@ local jdtls = require 'jdtls'
 local project_name = vim.fn.fnamemodify(vim.fn.getcwd(), ':p:h:t')
 local workspace_dir = vim.env.HOME .. '/.cache/jdtls-workspace/' .. project_name
 
+local jdtls_config = nixCats 'jdtls' .. '/jdtls/config_linux/config.ini'
+
+os.execute([[
+  if ![ -e "$HOME/.cache/jdtls/config_linux/config.ini" ]; then
+    mkdir -p $HOME/.cache/jdtls/config_linux
+    cp ]] .. jdtls_config .. [[ $HOME/.cache/jdtls/config_linux
+  fi
+]])
+
 -- Needed for debugging
 local bundles = {
   vim.fn.glob(nixCats 'java-debug-adapter' .. '/share/vscode/extensions/vscjava.vscode-java-debug/server/com.microsoft.java.debug.plugin*.jar'),
 }
--- /result/share/vscode/extensions/vscjava.vscode-java-debug/server/com.microsoft.java.debug.plugin-0.53.1.jar
 
 vim.api.nvim_create_autocmd('bufWritePre', {
   buffer = 0,
@@ -19,7 +27,7 @@ vim.api.nvim_create_autocmd('bufWritePre', {
 })
 
 -- Needed for running/debugging unit tests
-vim.list_extend(bundles, vim.split(vim.fn.glob(nixCats 'jav-test' .. '/share/vscode/extensions/vscjava.vscode-java-test/server/*.jar', true), '\n'))
+vim.list_extend(bundles, vim.split(vim.fn.glob(nixCats 'java-test' .. '/share/vscode/extensions/vscjava.vscode-java-test/server/*.jar', true), '\n'))
 
 -- Eclipse PDE support
 vim.list_extend(bundles, vim.split(vim.fn.glob(nixCats 'eclipse-pde' .. '/share/vscode/extensions/yaozheng.vscode-pde/server/*.jar', true), '\n'))
@@ -29,26 +37,10 @@ local config = {
   -- The command that starts the language server
   -- See: https://github.com/eclipse/eclipse.jdt.ls#running-from-the-command-line
   cmd = {
-    nixCats 'java-home' .. '/bin/java',
-    '-Declipse.application=org.eclipse.jdt.ls.core.id1',
-    '-Dosgi.bundles.defaultStartLevel=4',
-    '-Declipse.product=org.eclipse.jdt.ls.core.product',
-    '-Dlog.protocol=true',
-    '-Dlog.level=ALL',
+    nixCats 'jdtls' .. '/bin/jdtls',
     '-javaagent:' .. nixCats 'lombok-jar',
-    '-Xmx4g',
-    '--add-modules=ALL-SYSTEM',
-    '--add-opens',
-    'java.base/java.util=ALL-UNNAMED',
-    '--add-opens',
-    'java.base/java.lang=ALL-UNNAMED',
-
-    -- Eclipse jdtls location
-    '-jar',
-    vim.fn.glob(nixCats 'jdtls' .. '/jdtls/plugins/org.eclipse.equinox.launcher_*.jar'),
-    -- TODO Update this to point to the correct jdtls subdirectory for your OS (config_linux, config_mac, config_win, etc)
     '-configuration',
-    nixCats 'jdtls' .. '/jdtls/config_linux',
+    vim.env.HOME .. '/.cache/jdtls/config_linux',
     '-data',
     workspace_dir,
   },
@@ -56,7 +48,7 @@ local config = {
   -- This is the default if not provided, you can remove it. Or adjust as needed.
   -- One dedicated LSP server & client will be started per unique root_dir
   -- root_dir = require('jdtls.setup').find_root({ '.git', 'mvnw', 'pom.xml', 'build.gradle' }),
-  root_dir = require('jdtls.setup').find_root { '.git' },
+  root_dir = require('jdtls.setup').find_root { 'shell.nix' },
 
   -- Here you can configure eclipse.jdt.ls specific settings
   -- See https://github.com/eclipse/eclipse.jdt.ls/wiki/Running-the-JAVA-LS-server-from-the-command-line#initialize-request
@@ -77,11 +69,11 @@ local config = {
         runtimes = {
           {
             name = 'JavaSE-11',
-            path = vim.env.JAVA_HOME_11,
+            path = nixCats 'java-11',
           },
           {
             name = 'JavaSE-17',
-            path = vim.env.JAVA_HOME_17,
+            path = nixCats 'java-17',
           },
           -- {
           -- 	name = "JavaSE-19",
@@ -154,12 +146,12 @@ local config = {
 }
 
 -- Needed for debugging
-config['on_attach'] = function(client, bufnr)
-  -- jdtls.setup_dap({ hotcodereplace = 'auto' })
-  -- require('jdtls.dap').setup_dap_main_class_configs()
-  local on_attach = require 'on_attach'
-  on_attach(client, bufnr)
-end
+-- config['on_attach'] = function(client, bufnr)
+--   -- jdtls.setup_dap({ hotcodereplace = 'auto' })
+--   -- require('jdtls.dap').setup_dap_main_class_configs()
+--   local on_attach = require 'on_attach'
+--   on_attach(client, bufnr)
+-- end
 
 -- This starts a new client & server, or attaches to an existing client & server based on the `root_dir`.
 jdtls.start_or_attach(config)

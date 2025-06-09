@@ -706,8 +706,10 @@ require('nixCatsUtils.lazyCat').setup(nixCats.pawsible { 'allPlugins', 'start', 
       if require('nixCatsUtils').isNixCats then
         -- set up the servers to be loaded on the appropriate filetypes!
         for server_name, cfg in pairs(servers) do
-          vim.lsp.config(server_name, cfg)
-          vim.lsp.enable(server_name)
+          if server_name ~= 'jdtls' then
+            vim.lsp.config(server_name, cfg)
+            vim.lsp.enable(server_name)
+          end
         end
       else
         -- NOTE: nixCats: and if no nix, use mason
@@ -731,8 +733,10 @@ require('nixCatsUtils.lazyCat').setup(nixCats.pawsible { 'allPlugins', 'start', 
         require('mason-lspconfig').setup {
           handlers = {
             function(server_name)
-              vim.lsp.config(server_name, servers[server_name] or {})
-              vim.lsp.enable(server_name)
+              if server_name ~= 'jdtls' then
+                vim.lsp.config(server_name, servers[server_name] or {})
+                vim.lsp.enable(server_name)
+              end
             end,
           },
         }

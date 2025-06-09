@@ -102,12 +102,16 @@
           nixd
           stylua
           nil
+          jdk21
         ];
         kickstart-debug = [
           delve
         ];
         kickstart-lint = [
           markdownlint-cli
+        ];
+        custom = [
+          jdt-language-server
         ];
       };
 
@@ -293,26 +297,12 @@
 
           java-debug-adapter = "${pkgs.vscode-extensions.vscjava.vscode-java-debug}";
           java-test = "${pkgs.vscode-extensions.vscjava.vscode-java-test}";
-          java-home = "${pkgs.jdk21}";
+          java-home = "${pkgs.jdk21}/lib/openjdk";
+          java-11 = "${pkgs.jdk11}/lib/openjdk";
+          java-17 = "${pkgs.jdk17}/lib/openjdk";
           jdtls = "${pkgs.jdt-language-server}";
-          eclipse-pde = let
-              vscode-pde = pkgs.vscode-utils.buildVscodeMarketplaceExtension {
-              mktplcRef = {
-                publisher = "yaozheng";
-                name = "vscode-pde";
-                version = "0.11.1";
-                hash = "sha256-CAllsD/jwG/Noobb1upb6c6XWSd/uGK1U5dyxCiFCsE=";
-              };
-            };
-          in "${vscode-pde}";
-
-          lombok-jar = let
-            version = "1.18.38";
-            lombok = pkgs.fetchurl {
-              url = "http://projectlombok.org/downloads/lombok-${version}.jar";
-              hash = "sha256-Hh5CfDb/Y8RP0w7yktnnc+oxVEYKtiZdP+1+b1vFD7k=";
-            };
-          in "${lombok}";
+          eclipse-pde = "${pkgs.callPackage ./packages/vscode-pde.nix {} }";
+          lombok-jar = "${pkgs.callPackage ./packages/lombok.nix {} }";
 
           example = {
             youCan = "add more than just booleans";
