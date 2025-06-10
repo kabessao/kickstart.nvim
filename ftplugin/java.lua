@@ -1,9 +1,14 @@
 -- JDTLS (Java LSP) configuration
+
+if nixCats 'java.enable' == false then
+  return
+end
+
 local jdtls = require 'jdtls'
 local project_name = vim.fn.fnamemodify(vim.fn.getcwd(), ':p:h:t')
 local workspace_dir = vim.env.HOME .. '/.cache/jdtls-workspace/' .. project_name
 
-local jdtls_config = nixCats 'jdtls' .. '/jdtls/config_linux/config.ini'
+local jdtls_config = nixCats 'java.jdtls' .. '/jdtls/config_linux/config.ini'
 
 os.execute([[
   if ![ -e "$HOME/.cache/jdtls/config_linux/config.ini" ]; then
@@ -14,7 +19,7 @@ os.execute([[
 
 -- Needed for debugging
 local bundles = {
-  vim.fn.glob(nixCats 'java-debug-adapter' .. '/share/vscode/extensions/vscjava.vscode-java-debug/server/com.microsoft.java.debug.plugin*.jar'),
+  vim.fn.glob(nixCats 'java.java-debug-adapter' .. '/share/vscode/extensions/vscjava.vscode-java-debug/server/com.microsoft.java.debug.plugin*.jar'),
 }
 
 vim.api.nvim_create_autocmd('bufWritePre', {
@@ -27,18 +32,18 @@ vim.api.nvim_create_autocmd('bufWritePre', {
 })
 
 -- Needed for running/debugging unit tests
-vim.list_extend(bundles, vim.split(vim.fn.glob(nixCats 'java-test' .. '/share/vscode/extensions/vscjava.vscode-java-test/server/*.jar', true), '\n'))
+vim.list_extend(bundles, vim.split(vim.fn.glob(nixCats 'java.java-test' .. '/share/vscode/extensions/vscjava.vscode-java-test/server/*.jar', true), '\n'))
 
 -- Eclipse PDE support
-vim.list_extend(bundles, vim.split(vim.fn.glob(nixCats 'eclipse-pde' .. '/share/vscode/extensions/yaozheng.vscode-pde/server/*.jar', true), '\n'))
+vim.list_extend(bundles, vim.split(vim.fn.glob(nixCats 'java.eclipse-pde' .. '/share/vscode/extensions/yaozheng.vscode-pde/server/*.jar', true), '\n'))
 
 -- See `:help vim.lsp.start_client` for an overview of the supported `config` options.
 local config = {
   -- The command that starts the language server
   -- See: https://github.com/eclipse/eclipse.jdt.ls#running-from-the-command-line
   cmd = {
-    nixCats 'jdtls' .. '/bin/jdtls',
-    '-javaagent:' .. nixCats 'lombok-jar',
+    nixCats 'java.jdtls' .. '/bin/jdtls',
+    '-javaagent:' .. nixCats 'java.lombok-jar',
     '-configuration',
     vim.env.HOME .. '/.cache/jdtls/config_linux',
     '-data',
@@ -58,7 +63,7 @@ local config = {
         enabled = false,
       },
       -- TODO Replace this with the absolute path to your main java version (JDK 17 or higher)
-      home = nixCats 'java-home',
+      home = nixCats 'java.java-home',
       eclipse = {
         downloadSources = true,
       },
@@ -69,11 +74,11 @@ local config = {
         runtimes = {
           {
             name = 'JavaSE-11',
-            path = nixCats 'java-11',
+            path = nixCats 'java.java-11',
           },
           {
             name = 'JavaSE-17',
-            path = nixCats 'java-17',
+            path = nixCats 'java.java-17',
           },
           -- {
           -- 	name = "JavaSE-19",

@@ -102,7 +102,6 @@
           nixd
           stylua
           nil
-          jdk21
         ];
         kickstart-debug = [
           delve
@@ -295,24 +294,16 @@
           # we can pass whatever we want actually.
           have_nerd_font = true;
 
-          java-debug-adapter = "${pkgs.vscode-extensions.vscjava.vscode-java-debug}";
-          java-test = "${pkgs.vscode-extensions.vscjava.vscode-java-test}";
-          java-home = "${pkgs.jdk21}/lib/openjdk";
-          java-11 = "${pkgs.jdk11}/lib/openjdk";
-          java-17 = "${pkgs.jdk17}/lib/openjdk";
-          jdtls = "${pkgs.jdt-language-server}";
-          eclipse-pde = "${pkgs.callPackage ./packages/vscode-pde.nix {} }";
-          lombok-jar = "${pkgs.callPackage ./packages/lombok.nix {} }";
-
-          example = {
-            youCan = "add more than just booleans";
-            toThisSet = [
-              "and the contents of this categories set"
-              "will be accessible to your lua with"
-              "nixCats('path.to.value')"
-              "see :help nixCats"
-              "and type :NixCats to see the categories set in nvim"
-            ];
+          java = {
+            enable = true;
+            java-debug-adapter = "${pkgs.vscode-extensions.vscjava.vscode-java-debug}";
+            java-test = "${pkgs.vscode-extensions.vscjava.vscode-java-test}";
+            java-home = "${pkgs.jdk21}/lib/openjdk";
+            java-11 = "${pkgs.jdk11}/lib/openjdk";
+            java-17 = "${pkgs.jdk17}/lib/openjdk";
+            jdtls = "${pkgs.jdt-language-server}";
+            eclipse-pde = "${pkgs.callPackage ./packages/vscode-pde.nix {} }";
+            lombok-jar = "${pkgs.callPackage ./packages/lombok.nix {} }";
           };
         };
       };
