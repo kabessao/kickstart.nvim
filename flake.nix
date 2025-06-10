@@ -160,7 +160,7 @@
           markdown-nvim
           lspsaga-nvim
           cloak-nvim
-          ranger-nvim
+          (pkgs.callPackage ./packages/ranger-patched.nix {} )
           diffview-nvim
           barbar-nvim
           tabular
