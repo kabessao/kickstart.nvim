@@ -127,6 +127,13 @@ return {
   'nvim-tree/nvim-web-devicons',
 
   {
+    'nvim-treesitter/nvim-treesitter-context',
+    config = {
+      enable = true,
+    },
+  },
+
+  {
     'jmbuhr/otter.nvim',
     dependencies = {
       'nvim-treesitter/nvim-treesitter',
