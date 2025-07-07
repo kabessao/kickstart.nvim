@@ -109,6 +109,9 @@
         kickstart-lint = [
           markdownlint-cli
         ];
+        jdtls = [
+          jdt-language-server
+        ];
         custom = [
           gopls
           ranger
@@ -290,6 +293,8 @@
 
           # we can pass whatever we want actually.
           have_nerd_font = true;
+
+          jdtls = true;
 
           java = {
             enable = true;
