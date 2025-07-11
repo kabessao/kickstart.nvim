@@ -113,6 +113,8 @@
           jdt-language-server
         ];
         custom = [
+          nushell
+          elixir-ls
           gopls
           ranger
           lazygit

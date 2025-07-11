@@ -682,6 +682,24 @@ require('nixCatsUtils.lazyCat').setup(nixCats.pawsible { 'allPlugins', 'start', 
         servers.rnix = {}
         servers.nil_ls = {}
       end
+      servers.elixir_ls = {
+        cmd = {
+          'elixir-ls',
+        },
+        filetypes = {
+          'ex',
+          'exs',
+        },
+      }
+      servers.nu = {
+        cmd = {
+          'nu',
+          '--lsp',
+        },
+        filetypes = {
+          'nu',
+        },
+      }
       servers.gopls = {}
       servers.lua_ls = {
         -- cmd = {...},
