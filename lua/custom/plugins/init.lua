@@ -12,7 +12,8 @@ end
 vim.cmd [[
 augroup diagnostics
   autocmd!
-  autocmd FileType qf nmap <buffer> q <cmd>q<cr>
+  autocmd FileType qf,sagarename,gitsigns-blame nmap <buffer> q <cmd>q<cr>
+  autocmd FileType sagarename nmap <buffer> <esc> <cmd>q<cr>
 augroup end
 ]]
 
@@ -44,41 +45,43 @@ vim.opt.list = false
 vim.notify = require 'notify'
 vim.print = require 'notify'
 
--- LazyGit commands
+-- LazyGit/Git commands
 vim.keymap.set('n', '<leader>gg', '<CMD>LazyGit<CR>', { silent = true, desc = 'Open Lazygit' })
 vim.keymap.set('n', '<leader>gc', '<CMD>LazyGitCurrentFile<CR>', { silent = true, desc = 'Open Lazygit with curent file' })
+vim.keymap.set('n', '<leader>gb', '<CMD>Git blame<CR>', { silent = true, desc = 'Open Git Blame' })
 
 -- vim.keymap.set('n', '<', '<<_', { noremap = true, silent = true })
 -- vim.keymap.set('n', '>', '>>_', { noremap = true, silent = true })
 
-vim.keymap.set('v', '<', '<<gv', { noremap = true, silent = true })
-vim.keymap.set('v', '>', '>>gv', { noremap = true, silent = true })
+vim.keymap.set('v', '<', '<<gv', { noremap = true, silent = true, desc = 'Ident backwards' })
+vim.keymap.set('v', '>', '>>gv', { noremap = true, silent = true, desc = 'Ident forwards' })
 
-vim.keymap.set('n', '<c-k>', '<c-w>k', { silent = true })
-vim.keymap.set('n', '<c-j>', '<c-w>j', { silent = true })
-vim.keymap.set('n', '<c-l>', '<c-w>l', { silent = true })
-vim.keymap.set('n', '<c-h>', '<c-w>h', { silent = true })
+vim.keymap.set('n', '<c-h>', '<c-w>h', { silent = true, desc = 'Move focus left' })
+vim.keymap.set('n', '<c-j>', '<c-w>j', { silent = true, desc = 'Move focus down' })
+vim.keymap.set('n', '<c-k>', '<c-w>k', { silent = true, desc = 'Move focus up' })
+vim.keymap.set('n', '<c-l>', '<c-w>l', { silent = true, desc = 'Move focus right' })
 
 vim.keymap.set('n', '<leader>z', ':UndotreeToggle<CR>', { silent = true })
 
 vim.keymap.set('n', '<leader>tc', ':CloakToggle<CR>', { silent = true, desc = '[t]oggle [c]loak' })
 
-vim.keymap.set('n', '<C-j>', 'j', { silent = true })
-vim.keymap.set('n', '<C-k>', 'k', { silent = true })
-vim.keymap.set('n', '<C-h>', 'h', { silent = true })
-vim.keymap.set('n', '<C-l>', 'l', { silent = true })
+vim.keymap.set('n', '<C-h>', 'h', { silent = true, desc = 'Move focus left' })
+vim.keymap.set('n', '<C-j>', 'j', { silent = true, desc = 'Move focus down' })
+vim.keymap.set('n', '<C-k>', 'k', { silent = true, desc = 'Move focus up' })
+vim.keymap.set('n', '<C-l>', 'l', { silent = true, desc = 'Move focus right' })
 
-vim.keymap.set('n', '<M-j>', ':m .+1<CR>==', { silent = true })
-vim.keymap.set('x', '<M-j>', ":m '>+1<CR>gv-gv", { silent = true })
+vim.keymap.set('n', '<M-j>', ':m .+1<CR>', { silent = true, desc = 'Move line up' })
+vim.keymap.set('x', '<M-j>', ":m '>+1<CR>gv-gv", { silent = true, desc = 'Move line up' })
 
-vim.keymap.set('n', '<M-k>', ':m .-2<CR>==', { silent = true })
-vim.keymap.set('x', '<M-k>', ":m '<-2<CR>gv-gv", { silent = true })
+vim.keymap.set('n', '<M-k>', ':m .-2<CR>', { silent = true, desc = 'Move line down' })
+vim.keymap.set('x', '<M-k>', ":m '<-2<CR>gv-gv", { silent = true, desc = 'Move line down' })
 
-vim.keymap.set('n', '<m-l>', '<cmd>BufferNext<CR>', { silent = true })
-vim.keymap.set('n', '<m-h>', '<cmd>BufferPrevious<CR>', { silent = true })
-vim.keymap.set('n', '<m-c-l>', '<cmd>BufferMoveNext<CR>', { silent = true })
-vim.keymap.set('n', '<m-c-h>', '<cmd>BufferMovePrevious<CR>', { silent = true })
-vim.keymap.set('n', '<leader>c', '<cmd>BufferClose<CR>', { silent = true })
+vim.keymap.set('n', '<m-l>', '<cmd>BufferNext<CR>', { silent = true, desc = 'Go to next buffer' })
+vim.keymap.set('n', '<m-h>', '<cmd>BufferPrevious<CR>', { silent = true, desc = 'Go to previous buffer' })
+vim.keymap.set('n', '<m-c-l>', '<cmd>BufferMoveNext<CR>', { silent = true, desc = 'Move buffer to the right' })
+vim.keymap.set('n', '<m-c-h>', '<cmd>BufferMovePrevious<CR>', { silent = true, desc = 'Move buffer to the left' })
+vim.keymap.set('n', '<leader>c', '<cmd>BufferClose<CR>', { silent = true, desc = 'Close current buffer' })
+vim.keymap.set('n', '<leader>C', '<cmd>BufferClose!<CR>', { silent = true, desc = 'Close current buffer forcing' })
 
 vim.keymap.set({ 'n', 'v' }, '<leader>rR', ':s;\\<"\\>;', { silent = true })
 vim.keymap.set({ 'n', 'v' }, '<leader>rr', ':s;";', { silent = true })
@@ -86,16 +89,17 @@ vim.keymap.set({ 'n', 'v' }, '<leader>ra', ':s;$;', { silent = true })
 vim.keymap.set({ 'n', 'v' }, '<leader>ri', ':s;^;', { silent = true })
 vim.keymap.set({ 'n', 'v' }, '<leader>rf', ':s;";', { silent = true })
 
-vim.keymap.set({ 'n', 'v' }, '<leader>a:', ':Tab /:<cr>', { silent = true })
-vim.keymap.set({ 'n', 'v' }, '<leader>a,', ':Tab /,<cr>', { silent = true })
-vim.keymap.set({ 'n', 'v' }, '<leader>a=', ':Tab /=<cr>', { silent = true })
-vim.keymap.set({ 'n', 'v' }, '<leader>a|', ':Tab /|<cr>', { silent = true })
-vim.keymap.set({ 'n', 'v' }, '<leader>a ', ':Tab / <cr>', { silent = true })
-vim.keymap.set({ 'n', 'v' }, '<leader>a;', ':Tab /;<cr>', { silent = true })
+vim.keymap.set({ 'n', 'v' }, '<leader>a:', ':Tab /:<cr>', { silent = true, desc = 'Aligns text using [:]' })
+vim.keymap.set({ 'n', 'v' }, '<leader>a,', ':Tab /,<cr>', { silent = true, desc = 'Aligns text using [,]' })
+vim.keymap.set({ 'n', 'v' }, '<leader>a=', ':Tab /=<cr>', { silent = true, desc = 'Aligns text using [=]' })
+vim.keymap.set({ 'n', 'v' }, '<leader>a|', ':Tab /|<cr>', { silent = true, desc = 'Aligns text using [|]' })
+vim.keymap.set({ 'n', 'v' }, '<leader>a ', ':Tab / <cr>', { silent = true, desc = 'Aligns text using [ ]' })
+vim.keymap.set({ 'n', 'v' }, '<leader>a;', ':Tab /;<cr>', { silent = true, desc = 'Aligns text using [;]' })
+vim.keymap.set({ 'n', 'v' }, '<leader>a;', ':Tab<cr>', { silent = true, desc = 'Re-aligns text' })
 
 -- Remap for dealing with word wrap
-vim.keymap.set('n', 'k', "v:count == 0 ? 'gk' : 'k'", { expr = true, silent = true })
-vim.keymap.set('n', 'j', "v:count == 0 ? 'gj' : 'j'", { expr = true, silent = true })
+vim.keymap.set('n', 'k', "v:count == 0 ? 'gk' : 'k'", { expr = true, silent = true, desc = 'Moves cursor up by a visual line' })
+vim.keymap.set('n', 'j', "v:count == 0 ? 'gj' : 'j'", { expr = true, silent = true, desc = 'Moves cursor down by a visual line' })
 
 vim.g.firenvim_config = {
   globalSettings = {
@@ -127,9 +131,17 @@ return {
   'nvim-tree/nvim-web-devicons',
 
   {
+    'MeanderingProgrammer/render-markdown.nvim',
+    opts = {},
+  },
+
+  {
     'nvim-treesitter/nvim-treesitter-context',
     config = {
       enable = true,
+    },
+    opts = {
+      max_lines = 5,
     },
   },
 
@@ -149,14 +161,6 @@ return {
   'mfussenegger/nvim-jdtls',
 
   {
-    'tadmccorkle/markdown.nvim',
-    ft = 'markdown', -- or 'event = "VeryLazy"'
-    opts = {
-      -- configuration here or empty for defaults
-    },
-  },
-
-  {
     'NMAC427/guess-indent.nvim',
     config = function()
       require('guess-indent').setup {}
@@ -171,8 +175,10 @@ return {
           enable = false,
         },
       }
-      vim.keymap.set('n', 'gp', '<CMD>Lspsaga peek_definition<CR>', { silent = true, desc = 'Peek Definition' })
-      vim.keymap.set('n', 'K', '<CMD>Lspsaga hover_doc<CR>', { silent = true })
+      vim.keymap.set('n', 'gp', '<CMD>Lspsaga peek_definition<CR>', { silent = true, desc = 'LSP: Peek Definition' })
+      vim.keymap.set('n', 'K', '<CMD>Lspsaga hover_doc<CR>', { silent = true, desc = 'LSP: Show hover description' })
+      vim.keymap.set('n', '<leader>rn', '<CMD>Lspsaga rename<CR>', { silent = true, desc = 'LSP: Rename entity' })
+      vim.keymap.set('n', '<leader>fu', '<CMD>Lspsaga finder<CR>', { silent = true, desc = 'LSP: Find usages' })
     end,
   },
 
