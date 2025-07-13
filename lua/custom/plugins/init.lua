@@ -139,8 +139,6 @@ return {
     'nvim-treesitter/nvim-treesitter-context',
     config = {
       enable = true,
-    },
-    opts = {
       max_lines = 5,
     },
   },
