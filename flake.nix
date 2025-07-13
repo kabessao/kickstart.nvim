@@ -107,14 +107,13 @@
           delve
         ];
         kickstart-lint = [
-          markdownlint-cli
+          # markdownlint-cli
         ];
         jdtls = [
           jdt-language-server
         ];
         custom = [
           nushell
-          elixir-ls
           gopls
           ranger
           lazygit
@@ -148,6 +147,7 @@
           todo-comments-nvim
           mini-nvim
           nvim-treesitter.withAllGrammars
+          render-markdown-nvim
         ];
         custom = with pkgs.vimPlugins; [
           guess-indent-nvim
@@ -158,7 +158,6 @@
           otter-nvim
           nvim-colorizer-lua
           nvim-jdtls
-          markdown-nvim
           lspsaga-nvim
           cloak-nvim
           (pkgs.callPackage ./packages/ranger-patched.nix {} )
@@ -297,6 +296,8 @@
           have_nerd_font = true;
 
           jdtls = true;
+
+          elixir_ls = "${pkgs.elixir_ls}/lib/language_server.sh";
 
           java = {
             enable = true;
