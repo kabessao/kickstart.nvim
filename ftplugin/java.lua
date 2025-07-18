@@ -22,15 +22,6 @@ local bundles = {
   vim.fn.glob(nixCats 'java.java-debug-adapter' .. '/share/vscode/extensions/vscjava.vscode-java-debug/server/com.microsoft.java.debug.plugin*.jar'),
 }
 
-vim.api.nvim_create_autocmd('bufWritePre', {
-  buffer = 0,
-  callback = function()
-    vim.lsp.buf.format()
-    require('jdtls').organize_imports()
-    vim.api.nvim_command 'w'
-  end,
-})
-
 -- Needed for running/debugging unit tests
 vim.list_extend(bundles, vim.split(vim.fn.glob(nixCats 'java.java-test' .. '/share/vscode/extensions/vscjava.vscode-java-test/server/*.jar', true), '\n'))
 

@@ -779,6 +779,13 @@ require('nixCatsUtils.lazyCat').setup(nixCats.pawsible { 'allPlugins', 'start', 
         -- Disable "format_on_save lsp_fallback" for languages that don't
         -- have a well standardized coding style. You can add additional
         -- languages here or re-enable it for the disabled ones.
+
+        -- Setting a global variable to toggle autoformatting
+        vim.g.autoformat = true
+
+        if not vim.g.autoformat then
+          return
+        end
         local disable_filetypes = { c = true, cpp = true }
         return {
           timeout_ms = 500,
