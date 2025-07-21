@@ -3,12 +3,11 @@
 --
 -- See the kickstart.nvim README for more information
 
--- quit diagnostics list
-
 if nixCats 'custom' == false then
   return {}
 end
 
+-- quit diagnostics list
 vim.cmd [[
 augroup diagnostics
   autocmd!
