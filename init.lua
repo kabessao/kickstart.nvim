@@ -691,6 +691,15 @@ require('nixCatsUtils.lazyCat').setup(nixCats.pawsible { 'allPlugins', 'start', 
           'elixir',
         },
       }
+      servers.bash_ls = {
+        cmd = {
+          'bash-language-server',
+          'start',
+        },
+        filetypes = {
+          'sh',
+        },
+      }
       servers.nu = {
         cmd = {
           'nu',
@@ -701,6 +710,16 @@ require('nixCatsUtils.lazyCat').setup(nixCats.pawsible { 'allPlugins', 'start', 
         },
       }
       servers.gopls = {}
+      servers.tsserver = {
+        cmd = {
+          'typescript-language-server',
+          '--stdio',
+        },
+        filetypes = {
+          'typescript',
+          'typescriptreact',
+        },
+      }
       servers.lua_ls = {
         -- cmd = {...},
         -- filetypes = { ...},

@@ -130,6 +130,14 @@ return {
   'nvim-tree/nvim-web-devicons',
 
   {
+    'jmbuhr/otter.nvim',
+    dependencies = {
+      'nvim-treesitter/nvim-treesitter',
+    },
+    opts = {},
+  },
+
+  {
     'MeanderingProgrammer/render-markdown.nvim',
     opts = {},
   },

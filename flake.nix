@@ -118,6 +118,8 @@
           ranger
           lazygit
           git
+          typescript-language-server
+          bash-language-server
         ];
       };
 
@@ -169,6 +171,7 @@
           nvim-autopairs
           firenvim
           nvim-treesitter-context
+          otter-nvim
         ];
         kickstart-debug = [
           nvim-dap
