@@ -3,6 +3,8 @@
 --
 -- See the kickstart.nvim README for more information
 
+require 'custom.plugins.progress'
+
 if nixCats 'custom' == false then
   return {}
 end
