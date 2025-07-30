@@ -3,7 +3,7 @@
 --
 -- See the kickstart.nvim README for more information
 
-require 'custom.plugins.progress'
+-- require 'custom.plugins.progress'
 
 if nixCats 'custom' == false then
   return {}
@@ -150,14 +150,6 @@ return {
       enable = true,
       max_lines = 5,
     },
-  },
-
-  {
-    'jmbuhr/otter.nvim',
-    dependencies = {
-      'nvim-treesitter/nvim-treesitter',
-    },
-    opts = {},
   },
 
   {

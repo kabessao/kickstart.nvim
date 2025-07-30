@@ -1,6 +1,8 @@
 -- Copied from https://github.com/rcarriga/nvim-notify/wiki/Usage-Recipes#progress-updates
 -- Utility functions shared between progress reports for LSP and DAP
 
+return {}
+
 local client_notifs = {}
 
 local function get_notif_data(client_id, token)
