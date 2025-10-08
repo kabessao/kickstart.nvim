@@ -9,11 +9,11 @@ if nixCats 'custom' == false then
   return {}
 end
 
--- quit diagnostics list
+-- quit some windows list
 vim.cmd [[
 augroup diagnostics
   autocmd!
-  autocmd FileType qf,sagarename,gitsigns-blame nmap <buffer> q <cmd>q<cr>
+  autocmd FileType qf,sagarename,gitsigns-blame,fugitiveblame nmap <buffer> q <cmd>q<cr>
   autocmd FileType sagarename nmap <buffer> <esc> <cmd>q<cr>
 augroup end
 ]]

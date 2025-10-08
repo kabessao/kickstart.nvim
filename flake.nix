@@ -172,6 +172,8 @@
           firenvim
           nvim-treesitter-context
           otter-nvim
+
+          vim-fugitive
         ];
         kickstart-debug = [
           nvim-dap
