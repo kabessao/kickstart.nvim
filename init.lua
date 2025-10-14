@@ -420,16 +420,6 @@ require('nixCatsUtils.lazyCat').setup(nixCats.pawsible { 'allPlugins', 'start', 
         -- pickers = {}
 
         defaults = {
-          vimgrep_arguments = {
-            'rg',
-            '--color=never',
-            '--no-heading',
-            '--with-filename',
-            '--line-number',
-            '--column',
-            '--smart-case',
-            (vim.env.NO_GIT_IGNORE and '-u'),
-          },
           mappings = {
             i = {
               ['<C-u>'] = false,
@@ -467,13 +457,27 @@ require('nixCatsUtils.lazyCat').setup(nixCats.pawsible { 'allPlugins', 'start', 
       vim.keymap.set('n', '<leader>s.', builtin.oldfiles, { desc = '[S]earch Recent Files ("." for repeat)' })
       vim.keymap.set('n', '<leader><leader>', builtin.buffers, { desc = '[ ] Find existing buffers' })
 
+      vim.keymap.set('n', '<leader>sG', function()
+        builtin.live_grep { additional_args = { '-u' } }
+      end, { desc = '[S]earch by [G]rep including Ignored' })
+
       vim.keymap.set('n', '<leader>sg', function()
-        builtin.live_grep { no_ignore = (vim.env.NO_GIT_IGNORE and true) } -- Doesn't work
+        builtin.live_grep {}
       end, { desc = '[S]earch by [G]rep' })
 
       vim.keymap.set('n', '<leader>sf', function()
-        builtin.find_files { no_ignore = (vim.env.NO_GIT_IGNORE and true) }
+        builtin.find_files {
+          no_ignore = false,
+          hidden = true,
+        }
       end, { desc = '[S]earch [F]iles' })
+
+      vim.keymap.set('n', '<leader>sF', function()
+        builtin.find_files {
+          no_ignore = true,
+          hidden = true,
+        }
+      end, { desc = '[S]earch [F]iles including Ignored' })
 
       -- Slightly advanced example of overriding default behavior and theme
       vim.keymap.set('n', '<leader>/', function()
