@@ -152,6 +152,7 @@
           render-markdown-nvim
         ];
         custom = with pkgs.vimPlugins; [
+          oil-nvim
           guess-indent-nvim
           nvim-notify
           vim-illuminate
