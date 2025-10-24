@@ -102,6 +102,15 @@ vim.keymap.set({ 'n', 'v' }, '<leader>a;', ':Tab<cr>', { silent = true, desc = '
 vim.keymap.set('n', 'k', "v:count == 0 ? 'gk' : 'k'", { expr = true, silent = true, desc = 'Moves cursor up by a visual line' })
 vim.keymap.set('n', 'j', "v:count == 0 ? 'gj' : 'j'", { expr = true, silent = true, desc = 'Moves cursor down by a visual line' })
 
+vim.keymap.set('n', '<leader>oc', function()
+  local path = vim.api.nvim_buf_get_name(0)
+  if path == '' then
+    return
+  end
+  local row, col = unpack(vim.api.nvim_win_get_cursor(0))
+  vim.cmd(string.format('silent !code --goto %s:%s:%s', path, row, col))
+end, { silent = true, desc = '[o]pen current file on vs[c]ode' })
+
 vim.g.firenvim_config = {
   globalSettings = {
     alt = 'all',
